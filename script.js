@@ -84,38 +84,56 @@ function showHeroSuccessBanner(message, durationMs = 4500) {
 
 function createCvPdf() {
   try {
-    if (!window.jspdf) {
-      alert('PDF library not loaded');
+    // Check if jsPDF library is available
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      // Fallback: open a mailto link with CV content
+      const subject = encodeURIComponent('My CV - Muhammad Hammad Tahir');
+      const body = encodeURIComponent(`
+MUHAMMAD HAMMAD TAHIR
+Artificial Intelligence Student
+
+Email: hammadtahirfdc@gmail.com
+Phone: +92 321 2307601
+Location: Karachi, Pakistan
+
+EDUCATION
+DHA Suffa University, Karachi, Pakistan
+Bachelor of Science in AI | Oct 2023 - Present
+
+Fazaia Degree College, Karachi, Pakistan
+Pre-Engineering (FSc) | Apr 2021 - May 2022
+
+SKILLS
+Python Programming, Deep Learning, Computer Vision, NLP, App Development
+
+PROJECTS
+- CNN for Image Classification
+- NLP Text Classification
+- Multiple learning projects
+
+ACHIEVEMENTS
+- Best Behaviour & Handwriting Certificates
+- Hour of Code Certificate
+- MIT Hackathon Participant
+- ISCT 2025 Conference Attendee
+      `);
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
       return;
     }
     
-    const jsPDF = window.jspdf.jsPDF;
-    const doc = new jsPDF();
+    // Try to create PDF
+    const jsPDF_func = window.jspdf.jsPDF;
+    const doc = new jsPDF_func();
     
-    // Simple test - just add text
-    doc.setFontSize(20);
     doc.text('Muhammad Hammad Tahir', 10, 10);
-    
-    doc.setFontSize(12);
-    doc.text('AI Student', 10, 30);
-    doc.text('Email: hammadtahirfdc@gmail.com', 10, 45);
-    doc.text('Phone: +92 321 2307601', 10, 55);
-    doc.text('Karachi, Pakistan', 10, 65);
-    
-    doc.setFontSize(14);
-    doc.text('Education', 10, 85);
-    
-    doc.setFontSize(11);
-    doc.text('DHA Suffa University', 10, 100);
-    doc.text('Bachelor of Science in AI | Oct 2023 - Present', 10, 110);
-    
-    doc.text('Fazaia Degree College', 10, 130);
-    doc.text('Pre-Engineering (FSc) | Apr 2021 - May 2022', 10, 140);
+    doc.text('AI Student', 10, 20);
+    doc.text('Email: hammadtahirfdc@gmail.com', 10, 30);
+    doc.text('Phone: +92 321 2307601', 10, 40);
     
     doc.save('Muhammad-Hammad-Tahir-CV.pdf');
-  } catch (error) {
-    console.error('Error:', error);
-    alert('Failed: ' + error.message);
+  } catch (e) {
+    console.error('PDF Error:', e);
+    alert('Download failed. Please retry or contact me directly.');
   }
 }
 
