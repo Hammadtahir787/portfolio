@@ -96,6 +96,10 @@ function createCvPdf() {
   const bottom = 282;
   let y = top;
 
+  const accentColor = [34, 211, 238]; // cyan #22d3ee
+  const darkColor = [7, 13, 26]; // dark bg
+  const textColor = [30, 30, 30];
+
   const ensureSpace = (needed = 8) => {
     if (y + needed > bottom) {
       doc.addPage();
@@ -105,16 +109,19 @@ function createCvPdf() {
 
   const addSectionTitle = (title) => {
     ensureSpace(10);
+    doc.setTextColor(...accentColor);
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(12.5);
+    doc.setFontSize(13);
     doc.text(title.toUpperCase(), marginX, y);
     y += 2;
-    doc.setDrawColor(50, 50, 50);
-    doc.line(marginX, y + 1.5, marginX + contentWidth, y + 1.5);
+    doc.setDrawColor(...accentColor);
+    doc.line(marginX, y + 1, marginX + contentWidth, y + 1);
     y += 6;
+    doc.setTextColor(...textColor);
   };
 
-  const addParagraph = (text, fontSize = 10.5, lineHeight = 5.3) => {
+  const addParagraph = (text, fontSize = 10.2, lineHeight = 5.2) => {
+    doc.setTextColor(...textColor);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(fontSize);
     const lines = doc.splitTextToSize(text, contentWidth);
@@ -124,60 +131,94 @@ function createCvPdf() {
   };
 
   const addBulletList = (items) => {
+    doc.setTextColor(...textColor);
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10.2);
+    doc.setFontSize(10);
     items.forEach((item) => {
-      const bullet = `- ${item}`;
-      const lines = doc.splitTextToSize(bullet, contentWidth);
-      ensureSpace(lines.length * 5 + 1);
-      doc.text(lines, marginX, y);
-      y += lines.length * 5;
+      const bullet = `• ${item}`;
+      const lines = doc.splitTextToSize(bullet, contentWidth - 2);
+      ensureSpace(lines.length * 4.8 + 1);
+      doc.text(lines, marginX + 2, y);
+      y += lines.length * 4.8;
     });
   };
 
+  // Header with photo
+  const imgUrl = 'assets/profile.png';
+  try {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      const dataUrl = canvas.toDataURL('image/png');
+      try {
+        doc.addImage(dataUrl, 'PNG', marginX + contentWidth - 28, y - 1, 26, 26);
+      } catch (e) {
+        // Image loading failed, continue without it
+      }
+    };
+    img.src = imgUrl;
+  } catch (e) {
+    // Silently continue if image fails
+  }
+
+  // Header section
+  doc.setTextColor(...darkColor);
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(19);
+  doc.setFontSize(22);
   doc.text('MUHAMMAD HAMMAD TAHIR', marginX, y);
   y += 7;
+  
+  doc.setTextColor(...accentColor);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10.5);
+  doc.setFontSize(11.5);
   doc.text('Artificial Intelligence Student', marginX, y);
   y += 5;
+  
+  doc.setTextColor(...textColor);
+  doc.setFontSize(9.5);
   doc.text('Email: hammadtahirfdc@gmail.com | Phone: +92 321 2307601', marginX, y);
-  y += 5;
-  doc.text('Location: Karachi, Pakistan | Address: Korangi Creek, Karachi', marginX, y);
-  y += 6;
+  y += 4;
+  doc.text('Location: Karachi, Pakistan', marginX, y);
+  y += 7;
 
   addSectionTitle('Professional Summary');
   addParagraph(
     'Motivated Artificial Intelligence student with hands-on experience in Deep Learning, Computer Vision and Natural Language Processing. Skilled in Python and modern AI frameworks, with practical experience building CNN and NLP models. Passionate about solving real-world problems through applied AI and continuous learning.'
   );
-  y += 4;
+  y += 3;
 
   addSectionTitle('Education');
+  doc.setTextColor(...darkColor);
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(10.8);
+  doc.setFontSize(11);
   doc.text('DHA Suffa University, Karachi, Pakistan', marginX, y);
-  y += 4.8;
+  y += 4.5;
+  doc.setTextColor(...textColor);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10.2);
+  doc.setFontSize(10);
   doc.text('Bachelor of Science in Artificial Intelligence | Oct 2023 - Present', marginX, y);
-  y += 4.8;
+  y += 4.5;
   addBulletList([
     'Focused on Machine Learning, Deep Learning, Computer Vision and NLP.',
     'Built learning projects involving CNN architectures and text models.'
   ]);
-  y += 2;
+  y += 1;
 
+  doc.setTextColor(...darkColor);
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(10.8);
+  doc.setFontSize(11);
   ensureSpace(10);
   doc.text('Fazaia Degree College, Karachi, Pakistan', marginX, y);
-  y += 4.8;
+  y += 4.5;
+  doc.setTextColor(...textColor);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10.2);
+  doc.setFontSize(10);
   doc.text('Pre-Engineering (FSc) | Apr 2021 - May 2022', marginX, y);
-  y += 7;
+  y += 6;
 
   addSectionTitle('Core Skills');
   addBulletList([
@@ -185,26 +226,28 @@ function createCvPdf() {
     'Deep Learning, Computer Vision, Natural Language Processing',
     'Problem Solving, Teamwork, Leadership, Adaptability'
   ]);
-  y += 4;
+  y += 3;
 
   addSectionTitle('Projects');
+  doc.setTextColor(...darkColor);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10.8);
   ensureSpace(8);
   doc.text('CNN for Image Classification (Learning Project)', marginX, y);
-  y += 5;
+  y += 4.5;
   addBulletList([
     'Studied core CNN concepts including convolution, pooling and activations.',
     'Implemented a basic model for multi-class image classification.',
     'Trained and evaluated the model using Python deep learning libraries.'
   ]);
-  y += 2;
+  y += 1;
 
+  doc.setTextColor(...darkColor);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10.8);
   ensureSpace(8);
   doc.text('NLP Text Classification (Practice Work)', marginX, y);
-  y += 5;
+  y += 4.5;
   addBulletList([
     'Explored NLP approaches with LSTM and transformer-based models.',
     'Built a sentiment classification model on a small dataset.',
@@ -213,6 +256,7 @@ function createCvPdf() {
 
   doc.addPage();
   y = top;
+  doc.setTextColor(...textColor);
 
   addSectionTitle('Additional Projects');
   addBulletList([
@@ -224,7 +268,7 @@ function createCvPdf() {
     'Quiz Game',
     'E-Commerce Website'
   ]);
-  y += 4;
+  y += 3;
 
   addSectionTitle('Achievements');
   addBulletList([
@@ -234,11 +278,11 @@ function createCvPdf() {
     'Cleared MIT Hackathon in a fast-paced innovation environment',
     'Participated in ISCT 2025 Conference on current AI and computing trends'
   ]);
-  y += 4;
+  y += 3;
 
   addSectionTitle('Languages');
   addBulletList(['English', 'Urdu', 'Punjabi']);
-  y += 4;
+  y += 3;
 
   addSectionTitle('Soft Skills');
   addBulletList([
@@ -253,10 +297,11 @@ function createCvPdf() {
   ]);
 
   ensureSpace(16);
-  y += 8;
+  y += 6;
+  doc.setTextColor([150, 150, 150]);
   doc.setFont('helvetica', 'italic');
-  doc.setFontSize(9.4);
-  doc.text('Generated from portfolio | Updated: April 2026', marginX, y);
+  doc.setFontSize(9);
+  doc.text('Professional portfolio-generated CV | Updated: April 2026', marginX, y);
 
   doc.save('Muhammad-Hammad-Tahir-CV.pdf');
 }
