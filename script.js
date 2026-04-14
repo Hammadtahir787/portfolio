@@ -82,7 +82,27 @@ function showHeroSuccessBanner(message, durationMs = 4500) {
   }, durationMs);
 }
 
-function createCvPdf() {
+function loadImageDataUrl(src) {
+  return fetch(src)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Unable to load image: ${src}`);
+      }
+
+      return response.blob();
+    })
+    .then(
+      (blob) =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        })
+    );
+}
+
+async function createCvPdf() {
   try {
     // Check if jsPDF library is available
     if (!window.jspdf || !window.jspdf.jsPDF) {
@@ -91,176 +111,314 @@ function createCvPdf() {
       const body = encodeURIComponent(`MUHAMMAD HAMMAD TAHIR
 Artificial Intelligence Student | Python Developer
 
-CONTACT INFORMATION
-Email: hammadtahirfdc@gmail.com
+CONTACT
 Phone: +92 321 2307601
+Email: hammadtahirfdc@gmail.com
 Location: Karachi, Pakistan
-GitHub: https://github.com/Hammadtahir787
-LinkedIn: https://www.linkedin.com/in/hammad-tahir-a45519319
+GitHub: github.com/Hammadtahir787
+LinkedIn: linkedin.com/in/hammad-tahir-a45519319
 
-PROFESSIONAL SUMMARY
-Motivated Artificial Intelligence student with hands-on experience in Deep Learning, Computer Vision, and Natural Language Processing. Skilled in Python and modern AI frameworks, with practical experience building CNN and NLP-based models. Passionate about applying AI to real-world problems and continuously learning advanced technologies.
+SUMMARY
+AI student with practical experience in Deep Learning, Computer Vision, NLP, and Python-based development.
 
 EDUCATION
-DHA Suffa University, Karachi, Pakistan
-Bachelor of Science in Artificial Intelligence | Oct 2023 - Present
-Focus on Machine Learning, Deep Learning, Computer Vision, and NLP. Completed multiple learning projects involving CNNs and NLP models.
+DHA Suffa University, Karachi
+BS in Artificial Intelligence | Oct 2023 - Present
 
-Fazaia Degree College, Karachi, Pakistan
+Fazaia Degree College, Karachi
 Pre-Engineering, FSc | Apr 2021 - May 2022
-Strong foundation in Mathematics and Physics with analytical and problem-solving skills.
 
-CORE TECHNICAL SKILLS
-• Python Programming (80%) - Advanced
-• Machine Learning Fundamentals (80%) - Advanced
-• App Development (80%) - Advanced
-• Deep Learning (60%) - Intermediate
-• Computer Vision (60%) - Intermediate
-• Natural Language Processing (60%) - Intermediate
+SKILLS
+Python, Machine Learning, Deep Learning, Computer Vision, NLP, App Development
 
-LANGUAGES
-• English - Advanced
-• Urdu - Native
-• Punjabi - Intermediate
+PROJECTS
+- CNN for Image Classification
+- NLP Text Classification
+- AI Voice Assistant, AI Chatbot, Calculator GUI, E-Commerce Website
 
-SOFT SKILLS
-• Teamwork & Collaboration
-• Problem-Solving & Critical Thinking
-• Leadership & Adaptability
-• Creativity & Innovation
-• Negotiation & Communication
-• Project Management
-
-KEY PROJECTS
-1. CNN for Image Classification
-   - Studied core CNN concepts: convolution, pooling, and activations
-   - Implemented a basic CNN model for multi-class image classification
-   - Trained and evaluated using Python and deep learning libraries
-
-2. NLP Text Classification
-   - Explored NLP techniques using LSTM and transformer-based approaches
-   - Built a sentiment classification model on a text dataset
-   - Performed preprocessing including tokenization, padding, and embeddings
-
-3. Other Build Projects
-   - Birthday Finder | Online Examination System (Java)
-   - Basic Calculator GUI (Python) | AI Voice Assistant (Python)
-   - AI Chatbot | Rock Paper Scissors Game | Quiz Game | E-Commerce Website
-
-ACHIEVEMENTS & CERTIFICATIONS
-• Best Behaviour Certificate
-• Best Handwriting Certificate
-• Hour of Code Certificate (Coding Game)
-• MIT Hackathon Participant - Competed in a fast-paced problem-solving environment
-• ISCT 2025 Conference Attendee - Gained exposure to current research trends in AI and computing
-
-CAREER OBJECTIVES
-Open to internships and junior AI roles in Machine Learning, Deep Learning, Computer Vision, and NLP domains.`);
+ACHIEVEMENTS
+- Best Behaviour Certificate
+- Best Handwriting Certificate
+- Hour of Code Certificate
+- MIT Hackathon Participant
+- ISCT 2025 Conference Attendee`);
       window.location.href = `mailto:?subject=${subject}&body=${body}`;
       return;
     }
-    
-    // Create comprehensive PDF
+
     const jsPDF_func = window.jspdf.jsPDF;
     const doc = new jsPDF_func({ orientation: 'portrait', unit: 'mm', format: 'a4' });
     const pageWidth = doc.internal.pageSize.getWidth();
-    const margin = 10;
-    let yPosition = margin;
-    const lineHeight = 5;
-    const sectionSpacing = 3;
-    
-    // Helper function to write text with wrapping
-    function writeWrapped(text, size, isBold, startY) {
-      doc.setFontSize(size);
-      if (isBold) doc.setFont(undefined, 'bold');
-      else doc.setFont(undefined, 'normal');
-      
-      const splitText = doc.splitTextToSize(text, pageWidth - 2 * margin);
-      doc.text(splitText, margin, startY);
-      return startY + (splitText.length * lineHeight) + 2;
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 12;
+    const headerHeight = 40;
+    const sidebarWidth = 54;
+    const sidebarX = margin;
+    const contentX = margin + sidebarWidth + 8;
+    const contentWidth = pageWidth - contentX - margin;
+    const sidebarInnerWidth = sidebarWidth - 2;
+    const bodyTop = headerHeight + 10;
+
+    const colors = {
+      black: [0, 0, 0],
+      ink: [30, 30, 30],
+      gray: [108, 108, 108],
+      line: [175, 175, 175],
+      white: [255, 255, 255],
+    };
+
+    function setColor(color) {
+      doc.setTextColor(color[0], color[1], color[2]);
     }
-    
-    function writeSection(title, startY) {
-      doc.setDrawColor(0, 180, 210);
-      doc.setLineWidth(0.5);
-      doc.line(margin, startY - 1, pageWidth - margin, startY - 1);
-      yPosition = writeWrapped(title, 12, true, startY);
-      return yPosition;
+
+    function addWrappedText(text, x, y, width, options = {}) {
+      const fontSize = options.fontSize ?? 9;
+      const fontStyle = options.fontStyle ?? 'normal';
+      const lineGap = options.lineGap ?? 4.4;
+      const textColor = options.textColor ?? colors.ink;
+
+      doc.setFont('helvetica', fontStyle);
+      doc.setFontSize(fontSize);
+      setColor(textColor);
+
+      const lines = doc.splitTextToSize(text, width);
+      doc.text(lines, x, y);
+      return y + lines.length * lineGap;
     }
-    
-    // Header
-    yPosition = writeWrapped('MUHAMMAD HAMMAD TAHIR', 16, true, yPosition);
-    yPosition = writeWrapped('Artificial Intelligence Student | Python Developer', 10, false, yPosition);
-    yPosition += sectionSpacing;
-    
-    // Contact
-    yPosition = writeWrapped('Email: hammadtahirfdc@gmail.com | Phone: +92 321 2307601 | Location: Karachi, Pakistan', 8, false, yPosition);
-    yPosition = writeWrapped('GitHub: github.com/Hammadtahir787 | LinkedIn: linkedin.com/in/hammad-tahir-a45519319', 8, false, yPosition);
-    yPosition += sectionSpacing;
-    
-    // Summary
-    yPosition = writeSection('PROFESSIONAL SUMMARY', yPosition);
-    yPosition = writeWrapped('Motivated AI student with hands-on experience in Deep Learning, Computer Vision, and NLP. Skilled in Python and modern AI frameworks with practical experience building CNN and NLP models. Passionate about applying AI to real-world problems.', 9, false, yPosition);
-    yPosition += sectionSpacing;
-    
-    // Education
-    yPosition = writeSection('EDUCATION', yPosition);
-    yPosition = writeWrapped('DHA Suffa University, Karachi, Pakistan', 10, true, yPosition);
-    yPosition = writeWrapped('Bachelor of Science in Artificial Intelligence | Oct 2023 - Present', 9, false, yPosition);
-    yPosition = writeWrapped('Focus on ML, Deep Learning, Computer Vision, and NLP with multiple completed projects.', 8, false, yPosition);
-    yPosition += 2;
-    
-    yPosition = writeWrapped('Fazaia Degree College, Karachi, Pakistan', 10, true, yPosition);
-    yPosition = writeWrapped('Pre-Engineering, FSc | Apr 2021 - May 2022', 9, false, yPosition);
-    yPosition = writeWrapped('Strong foundation in Mathematics and Physics.', 8, false, yPosition);
-    yPosition += sectionSpacing;
-    
-    // Skills
-    yPosition = writeSection('CORE SKILLS', yPosition);
-    yPosition = writeWrapped('Python Programming (80%) • Deep Learning (60%) • Computer Vision (60%) • NLP (60%) • App Development (80%) • Machine Learning Fundamentals (80%)', 9, false, yPosition);
-    yPosition += sectionSpacing;
-    
-    // Languages & Soft Skills
-    yPosition = writeSection('LANGUAGES & SOFT SKILLS', yPosition);
-    yPosition = writeWrapped('Languages: English (Advanced) • Urdu (Native) • Punjabi (Intermediate)', 9, false, yPosition);
-    yPosition = writeWrapped('Soft Skills: Teamwork • Problem-Solving • Leadership • Creativity • Critical Thinking • Adaptability • Management', 9, false, yPosition);
-    yPosition += sectionSpacing;
-    
-    // Projects
-    yPosition = writeSection('KEY PROJECTS', yPosition);
-    
-    yPosition = writeWrapped('1. CNN for Image Classification', 10, true, yPosition);
-    yPosition = writeWrapped('Implemented CNN model for multi-class image classification. Studied convolution, pooling, and activations using Python.', 9, false, yPosition);
-    yPosition += 2;
-    
-    yPosition = writeWrapped('2. NLP Text Classification', 10, true, yPosition);
-    yPosition = writeWrapped('Built sentiment classification model using LSTM and transformer approaches with preprocessing (tokenization, padding, embeddings).', 9, false, yPosition);
-    yPosition += 2;
-    
-    yPosition = writeWrapped('3. Other Build Projects', 10, true, yPosition);
-    yPosition = writeWrapped('Birthday Finder, Online Exam System (Java), Calculator GUI (Python), AI Voice Assistant, AI Chatbot, Games (Rock Paper Scissors, Quiz), E-Commerce Website.', 9, false, yPosition);
-    yPosition += sectionSpacing;
-    
-    // Achievements
-    if (yPosition > 240) {
-      doc.addPage();
-      yPosition = margin;
+
+    function addBulletItems(items, x, y, width, options = {}) {
+      const fontSize = options.fontSize ?? 8.6;
+      const bulletGap = options.bulletGap ?? 1.6;
+      const textColor = options.textColor ?? colors.ink;
+
+      items.forEach((item) => {
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(fontSize);
+        setColor(textColor);
+        doc.text('•', x, y);
+        y = addWrappedText(item, x + 3.8, y, width - 3.8, {
+          fontSize,
+          lineGap: options.lineGap ?? 4.2,
+          textColor,
+        });
+        y += bulletGap;
+      });
+
+      return y;
     }
-    
-    yPosition = writeSection('ACHIEVEMENTS', yPosition);
-    yPosition = writeWrapped('• Best Behaviour Certificate', 9, false, yPosition);
-    yPosition = writeWrapped('• Best Handwriting Certificate', 9, false, yPosition);
-    yPosition = writeWrapped('• Hour of Code Certificate (Coding Game)', 9, false, yPosition);
-    yPosition = writeWrapped('• MIT Hackathon Participant - Fast-paced problem-solving competition', 9, false, yPosition);
-    yPosition = writeWrapped('• ISCT 2025 Conference Attendee - Current research trends in AI and computing', 9, false, yPosition);
-    yPosition += sectionSpacing;
-    
-    // Career Objectives
-    yPosition = writeSection('CAREER OBJECTIVES', yPosition);
-    yPosition = writeWrapped('Open to internships and junior AI roles in Machine Learning, Deep Learning, Computer Vision, and NLP.', 9, false, yPosition);
-    
-    // Save PDF
-    doc.save('Muhammad-Hammad-Tahir-CV.pdf');
+
+    function addSidebarSection(title, y) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10.8);
+      setColor(colors.ink);
+      doc.text(title, sidebarX, y);
+      y += 5;
+      doc.setDrawColor(colors.line[0], colors.line[1], colors.line[2]);
+      doc.setLineWidth(0.35);
+      doc.line(sidebarX, y, sidebarX + sidebarInnerWidth, y);
+      return y + 5;
+    }
+
+    function addContentSection(title, y) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11.5);
+      setColor(colors.ink);
+      doc.text(title, contentX, y);
+      y += 4.5;
+      doc.setDrawColor(colors.line[0], colors.line[1], colors.line[2]);
+      doc.setLineWidth(0.35);
+      doc.line(contentX, y, contentX + contentWidth, y);
+      return y + 5;
+    }
+
+    function addExperienceEntry(role, org, dateRange, bullets, y) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      setColor(colors.ink);
+      doc.text(role, contentX, y);
+      y += 4.5;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9.1);
+      setColor(colors.gray);
+      doc.text(`${org} | ${dateRange}`, contentX, y);
+      y += 4.3;
+
+      y = addBulletItems(bullets, contentX, y, contentWidth - 2, {
+        fontSize: 8.6,
+        lineGap: 4.0,
+        bulletGap: 1.2,
+      });
+
+      return y + 2;
+    }
+
+    async function addProfilePhoto() {
+      try {
+        const imgData = await loadImageDataUrl('assets/profile.png');
+        const photoSize = 26;
+        const photoX = pageWidth - margin - photoSize;
+        const photoY = 7;
+        doc.setFillColor(colors.white[0], colors.white[1], colors.white[2]);
+        doc.circle(photoX + photoSize / 2, photoY + photoSize / 2, photoSize / 2 + 1.6, 'F');
+        doc.addImage(imgData, 'PNG', photoX, photoY, photoSize, photoSize);
+        doc.setDrawColor(colors.line[0], colors.line[1], colors.line[2]);
+        doc.setLineWidth(0.6);
+        doc.circle(photoX + photoSize / 2, photoY + photoSize / 2, photoSize / 2 + 1.6, 'S');
+      } catch (error) {
+        doc.setFillColor(colors.white[0], colors.white[1], colors.white[2]);
+        doc.circle(pageWidth - margin - 13, 20, 14, 'F');
+        doc.setDrawColor(colors.line[0], colors.line[1], colors.line[2]);
+        doc.circle(pageWidth - margin - 13, 20, 14, 'S');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        setColor(colors.gray);
+        doc.text('MHT', pageWidth - margin - 19, 22);
+      }
+    }
+
+    doc.setFillColor(colors.black[0], colors.black[1], colors.black[2]);
+    doc.rect(0, 0, pageWidth, headerHeight, 'F');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    setColor(colors.white);
+    doc.text('MUHAMMAD HAMMAD TAHIR', margin, 19);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9.6);
+    doc.setDrawColor(130, 130, 130);
+    doc.setLineWidth(0.7);
+    doc.line(margin, 24.5, pageWidth - 48, 24.5);
+    doc.text('Artificial Intelligence Student | Python Developer', margin, 30.5);
+
+    await addProfilePhoto();
+
+    doc.setDrawColor(colors.line[0], colors.line[1], colors.line[2]);
+    doc.setLineWidth(0.45);
+    doc.line(margin + sidebarWidth + 4, bodyTop - 2, margin + sidebarWidth + 4, pageHeight - margin);
+
+    let leftY = bodyTop;
+    let rightY = bodyTop;
+
+    leftY = addSidebarSection('Contact', leftY);
+    leftY = addWrappedText('Phone: +92 321 2307601', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.7, lineGap: 4.1, textColor: colors.gray });
+    leftY = addWrappedText('Email: hammadtahirfdc@gmail.com', sidebarX, leftY + 1, sidebarInnerWidth, { fontSize: 8.7, lineGap: 4.1, textColor: colors.gray });
+    leftY = addWrappedText('Karachi, Pakistan', sidebarX, leftY + 1, sidebarInnerWidth, { fontSize: 8.7, lineGap: 4.1, textColor: colors.gray });
+    leftY = addWrappedText('GitHub: github.com/Hammadtahir787', sidebarX, leftY + 1, sidebarInnerWidth, { fontSize: 8.2, lineGap: 4.0, textColor: colors.gray });
+    leftY = addWrappedText('LinkedIn: linkedin.com/in/hammad-tahir-a45519319', sidebarX, leftY + 1, sidebarInnerWidth, { fontSize: 8.0, lineGap: 4.0, textColor: colors.gray });
+
+    leftY += 2;
+    leftY = addSidebarSection('Skills', leftY);
+    leftY = addBulletItems(
+      [
+        'Python Programming',
+        'Machine Learning',
+        'Deep Learning',
+        'Computer Vision',
+        'Natural Language Processing',
+        'App Development',
+        'Problem Solving',
+        'Teamwork',
+      ],
+      sidebarX,
+      leftY,
+      sidebarInnerWidth,
+      { fontSize: 8.2, lineGap: 3.9, bulletGap: 0.8, textColor: colors.gray }
+    );
+
+    leftY += 2;
+    leftY = addSidebarSection('Education', leftY);
+    leftY = addWrappedText('DHA Suffa University', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.8, fontStyle: 'bold', lineGap: 4.0 });
+    leftY = addWrappedText('Karachi, Pakistan', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.2, textColor: colors.gray, lineGap: 4.0 });
+    leftY = addWrappedText('B.S. in Artificial Intelligence', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.2, lineGap: 4.0 });
+    leftY = addWrappedText('2023 - Present', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.0, textColor: colors.gray, lineGap: 4.0 });
+
+    leftY += 2;
+    leftY = addWrappedText('Fazaia Degree College', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.8, fontStyle: 'bold', lineGap: 4.0 });
+    leftY = addWrappedText('Karachi, Pakistan', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.2, textColor: colors.gray, lineGap: 4.0 });
+    leftY = addWrappedText('Pre-Engineering, FSc', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.2, lineGap: 4.0 });
+    leftY = addWrappedText('2021 - 2022', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.0, textColor: colors.gray, lineGap: 4.0 });
+
+    leftY += 2;
+    leftY = addSidebarSection('Languages', leftY);
+    leftY = addBulletItems(['English - Advanced', 'Urdu - Native', 'Punjabi - Intermediate'], sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.2, lineGap: 3.9, bulletGap: 0.6, textColor: colors.gray });
+
+    leftY += 2;
+    leftY = addSidebarSection('Achievements', leftY);
+    leftY = addBulletItems(
+      ['Best Behaviour Certificate', 'Best Handwriting Certificate', 'Hour of Code Certificate', 'MIT Hackathon Participant', 'ISCT 2025 Conference Attendee'],
+      sidebarX,
+      leftY,
+      sidebarInnerWidth,
+      { fontSize: 8.0, lineGap: 3.85, bulletGap: 0.6, textColor: colors.gray }
+    );
+
+    rightY = addContentSection('Summary', rightY);
+    rightY = addWrappedText(
+      'Motivated Artificial Intelligence student with practical experience in Deep Learning, Computer Vision, NLP, and Python-based development. Comfortable turning academic concepts into real projects and eager to contribute in internships or entry-level AI roles.',
+      contentX,
+      rightY,
+      contentWidth,
+      { fontSize: 9.1, lineGap: 4.2, textColor: colors.ink }
+    );
+
+    rightY += 3;
+    rightY = addContentSection('Experience', rightY);
+
+    rightY = addExperienceEntry(
+      'AI Project Developer',
+      'Academic & Personal Projects',
+      '2023 - Present',
+      [
+        'Built a CNN-based image classification project using Python and deep learning libraries.',
+        'Developed an NLP text classification model with preprocessing, tokenization, padding, and embeddings.',
+        'Created supporting projects including an AI voice assistant, chatbot, calculator GUI, and e-commerce website.',
+      ],
+      rightY
+    );
+
+    rightY = addExperienceEntry(
+      'AI Student',
+      'DHA Suffa University',
+      'Oct 2023 - Present',
+      [
+        'Studying Machine Learning, Deep Learning, Computer Vision, and NLP as part of the B.S. in Artificial Intelligence curriculum.',
+        'Applying course concepts through hands-on assignments and portfolio projects.',
+        'Building a strong foundation in problem solving, teamwork, and technical communication.',
+      ],
+      rightY
+    );
+
+    rightY = addContentSection('Selected Projects', rightY);
+    rightY = addBulletItems(
+      [
+        'CNN for Image Classification - learned convolution, pooling, activations, training, and evaluation.',
+        'NLP Text Classification - sentiment classification using LSTM and transformer-based approaches.',
+        'Other Build Projects - Birthday Finder, Online Examination System, AI Voice Assistant, AI Chatbot, Quiz Game, and more.',
+      ],
+      contentX,
+      rightY,
+      contentWidth,
+      { fontSize: 8.6, lineGap: 4.0, bulletGap: 1.1, textColor: colors.ink }
+    );
+
+    rightY += 2.5;
+    rightY = addContentSection('Career Objective', rightY);
+    rightY = addWrappedText(
+      'Open to internships and junior AI roles in Machine Learning, Deep Learning, Computer Vision, and NLP.',
+      contentX,
+      rightY,
+      contentWidth,
+      { fontSize: 9.1, lineGap: 4.2, textColor: colors.ink }
+    );
+
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(8.3);
+    setColor(colors.gray);
+    doc.text('Template style updated to match the requested two-column resume layout.', contentX, pageHeight - 12);
+
+    doc.save('Muhammad-Hammad-Tahir-CV-Template.pdf');
   } catch (e) {
     console.error('PDF Error:', e);
     alert('Download failed. Please retry or contact me directly.');
@@ -268,7 +426,9 @@ Open to internships and junior AI roles in Machine Learning, Deep Learning, Comp
 }
 
 if (downloadCvBtn) {
-  downloadCvBtn.addEventListener('click', createCvPdf);
+  downloadCvBtn.addEventListener('click', () => {
+    void createCvPdf();
+  });
 }
 
 function openContactModal() {
