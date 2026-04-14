@@ -106,19 +106,16 @@ function createCvPdf() {
 
     const addSectionTitle = (title) => {
       ensureSpace(10);
-      doc.setTextColor('#22d3ee');
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(13);
       doc.text(title.toUpperCase(), marginX, y);
       y += 2;
-      doc.setDrawColor('#22d3ee');
+      doc.setDrawColor(0, 0, 0);
       doc.line(marginX, y + 1, marginX + contentWidth, y + 1);
       y += 6;
-      doc.setTextColor('#1e1e1e');
     };
 
     const addParagraph = (text, fontSize = 10.2, lineHeight = 5.2) => {
-      doc.setTextColor('#1e1e1e');
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(fontSize);
       const lines = doc.splitTextToSize(text, contentWidth);
@@ -128,7 +125,6 @@ function createCvPdf() {
     };
 
     const addBulletList = (items) => {
-      doc.setTextColor('#1e1e1e');
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(10);
       items.forEach((item) => {
@@ -141,19 +137,16 @@ function createCvPdf() {
     };
 
     // Header section
-    doc.setTextColor('#070d1a');
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(22);
     doc.text('MUHAMMAD HAMMAD TAHIR', marginX, y);
     y += 7;
     
-    doc.setTextColor('#22d3ee');
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(11.5);
     doc.text('Artificial Intelligence Student', marginX, y);
     y += 5;
     
-    doc.setTextColor('#1e1e1e');
     doc.setFontSize(9.5);
     doc.text('Email: hammadtahirfdc@gmail.com | Phone: +92 321 2307601', marginX, y);
     y += 4;
@@ -167,12 +160,10 @@ function createCvPdf() {
     y += 3;
 
     addSectionTitle('Education');
-    doc.setTextColor('#070d1a');
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
     doc.text('DHA Suffa University, Karachi, Pakistan', marginX, y);
     y += 4.5;
-    doc.setTextColor('#1e1e1e');
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.text('Bachelor of Science in Artificial Intelligence | Oct 2023 - Present', marginX, y);
@@ -183,13 +174,11 @@ function createCvPdf() {
     ]);
     y += 1;
 
-    doc.setTextColor('#070d1a');
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
     ensureSpace(10);
     doc.text('Fazaia Degree College, Karachi, Pakistan', marginX, y);
     y += 4.5;
-    doc.setTextColor('#1e1e1e');
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.text('Pre-Engineering (FSc) | Apr 2021 - May 2022', marginX, y);
@@ -204,7 +193,6 @@ function createCvPdf() {
     y += 3;
 
     addSectionTitle('Projects');
-    doc.setTextColor('#070d1a');
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10.8);
     ensureSpace(8);
@@ -217,7 +205,6 @@ function createCvPdf() {
     ]);
     y += 1;
 
-    doc.setTextColor('#070d1a');
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10.8);
     ensureSpace(8);
@@ -231,7 +218,6 @@ function createCvPdf() {
 
     doc.addPage();
     y = top;
-    doc.setTextColor('#1e1e1e');
 
     addSectionTitle('Additional Projects');
     addBulletList([
@@ -273,7 +259,6 @@ function createCvPdf() {
 
     ensureSpace(16);
     y += 6;
-    doc.setTextColor('#969696');
     doc.setFont('helvetica', 'italic');
     doc.setFontSize(9);
     doc.text('Professional portfolio-generated CV | Updated: April 2026', marginX, y);
