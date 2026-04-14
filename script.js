@@ -97,10 +97,6 @@ function createCvPdf() {
     const bottom = 282;
     let y = top;
 
-    const accentColor = [34, 211, 238]; // cyan #22d3ee
-    const darkColor = [7, 13, 26]; // dark bg
-    const textColor = [30, 30, 30];
-
     const ensureSpace = (needed = 8) => {
       if (y + needed > bottom) {
         doc.addPage();
@@ -110,19 +106,19 @@ function createCvPdf() {
 
     const addSectionTitle = (title) => {
       ensureSpace(10);
-      doc.setTextColor(...accentColor);
+      doc.setTextColor(34, 211, 238);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(13);
       doc.text(title.toUpperCase(), marginX, y);
       y += 2;
-      doc.setDrawColor(...accentColor);
+      doc.setDrawColor(34, 211, 238);
       doc.line(marginX, y + 1, marginX + contentWidth, y + 1);
       y += 6;
-      doc.setTextColor(...textColor);
+      doc.setTextColor(30, 30, 30);
     };
 
     const addParagraph = (text, fontSize = 10.2, lineHeight = 5.2) => {
-      doc.setTextColor(...textColor);
+      doc.setTextColor(30, 30, 30);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(fontSize);
       const lines = doc.splitTextToSize(text, contentWidth);
@@ -132,7 +128,7 @@ function createCvPdf() {
     };
 
     const addBulletList = (items) => {
-      doc.setTextColor(...textColor);
+      doc.setTextColor(30, 30, 30);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(10);
       items.forEach((item) => {
@@ -144,20 +140,20 @@ function createCvPdf() {
       });
     };
 
-    // Add header section
-    doc.setTextColor(...darkColor);
+    // Header section
+    doc.setTextColor(7, 13, 26);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(22);
     doc.text('MUHAMMAD HAMMAD TAHIR', marginX, y);
     y += 7;
     
-    doc.setTextColor(...accentColor);
+    doc.setTextColor(34, 211, 238);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(11.5);
     doc.text('Artificial Intelligence Student', marginX, y);
     y += 5;
     
-    doc.setTextColor(...textColor);
+    doc.setTextColor(30, 30, 30);
     doc.setFontSize(9.5);
     doc.text('Email: hammadtahirfdc@gmail.com | Phone: +92 321 2307601', marginX, y);
     y += 4;
@@ -171,12 +167,12 @@ function createCvPdf() {
     y += 3;
 
     addSectionTitle('Education');
-    doc.setTextColor(...darkColor);
+    doc.setTextColor(7, 13, 26);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
     doc.text('DHA Suffa University, Karachi, Pakistan', marginX, y);
     y += 4.5;
-    doc.setTextColor(...textColor);
+    doc.setTextColor(30, 30, 30);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.text('Bachelor of Science in Artificial Intelligence | Oct 2023 - Present', marginX, y);
@@ -187,13 +183,13 @@ function createCvPdf() {
     ]);
     y += 1;
 
-    doc.setTextColor(...darkColor);
+    doc.setTextColor(7, 13, 26);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
     ensureSpace(10);
     doc.text('Fazaia Degree College, Karachi, Pakistan', marginX, y);
     y += 4.5;
-    doc.setTextColor(...textColor);
+    doc.setTextColor(30, 30, 30);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.text('Pre-Engineering (FSc) | Apr 2021 - May 2022', marginX, y);
@@ -208,7 +204,7 @@ function createCvPdf() {
     y += 3;
 
     addSectionTitle('Projects');
-    doc.setTextColor(...darkColor);
+    doc.setTextColor(7, 13, 26);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10.8);
     ensureSpace(8);
@@ -221,7 +217,7 @@ function createCvPdf() {
     ]);
     y += 1;
 
-    doc.setTextColor(...darkColor);
+    doc.setTextColor(7, 13, 26);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10.8);
     ensureSpace(8);
@@ -235,7 +231,7 @@ function createCvPdf() {
 
     doc.addPage();
     y = top;
-    doc.setTextColor(...textColor);
+    doc.setTextColor(30, 30, 30);
 
     addSectionTitle('Additional Projects');
     addBulletList([
@@ -277,7 +273,7 @@ function createCvPdf() {
 
     ensureSpace(16);
     y += 6;
-    doc.setTextColor([150, 150, 150]);
+    doc.setTextColor(150, 150, 150);
     doc.setFont('helvetica', 'italic');
     doc.setFontSize(9);
     doc.text('Professional portfolio-generated CV | Updated: April 2026', marginX, y);
