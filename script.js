@@ -143,26 +143,28 @@ function createCvPdf() {
     });
   };
 
-  // Header with photo
-  const imgUrl = 'assets/profile.png';
+  // Try to add profile photo
   try {
-    const img = new Image();
-    img.onload = function() {
+    const img = document.querySelector('.profile-pic');
+    if (img && img.src) {
       const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
+      canvas.width = 100;
+      canvas.height = 100;
       const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-      const dataUrl = canvas.toDataURL('image/png');
-      try {
-        doc.addImage(dataUrl, 'PNG', marginX + contentWidth - 28, y - 1, 26, 26);
-      } catch (e) {
-        // Image loading failed, continue without it
+      const tempImg = new Image();
+      tempImg.crossOrigin = 'anonymous';
+      tempImg.onload = function() {
+        ctx.drawImage(tempImg, 0, 0, 100, 100);
+      };
+      tempImg.src = img.src;
+      if (tempImg.complete) {
+        ctx.drawImage(tempImg, 0, 0, 100, 100);
+        const dataUrl = canvas.toDataURL('image/png');
+        doc.addImage(dataUrl, 'PNG', marginX + contentWidth - 26, top + 1, 24, 24);
       }
-    };
-    img.src = imgUrl;
+    }
   } catch (e) {
-    // Silently continue if image fails
+    // Image failed to load, continue without it
   }
 
   // Header section
