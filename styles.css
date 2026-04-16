@@ -828,6 +828,10 @@ main {
 }
 
 @media (max-width: 640px) {
+  .top-nav {
+    top: -0.35rem;
+  }
+
   .hero-body,
   .panel {
     padding: 1rem;
