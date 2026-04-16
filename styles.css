@@ -829,7 +829,7 @@ main {
 
 @media (max-width: 640px) {
   .hero {
-    padding-top: 6.5rem;
+    padding-top: 5rem;
   }
 
   .top-nav {
