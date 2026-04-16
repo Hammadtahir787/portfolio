@@ -435,7 +435,7 @@ ACHIEVEMENTS
       return;
     }
 
-    doc.save('Muhammad-Hammad-Tahir-CV-Template.pdf');
+    doc.save('Muhammad-Hammad-Tahir-CV.pdf');
   } catch (e) {
     console.error('PDF Error:', e);
     alert('Download failed. Please retry or contact me directly.');
