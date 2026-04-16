@@ -81,7 +81,7 @@ body {
 
 .top-nav {
   position: fixed;
-  top: 0.65rem;
+  top: 0.25rem;
   left: 50%;
   transform: translateX(-50%);
   width: min(1120px, 92vw);
