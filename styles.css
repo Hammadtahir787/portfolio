@@ -893,6 +893,14 @@ main {
 }
 
 @media (max-width: 420px) {
+  .hero {
+    padding-top: 9.5rem;
+  }
+
+  .hero-body {
+    padding-top: 1.25rem;
+  }
+
   .hero-actions {
     flex-direction: column;
     align-items: stretch;
