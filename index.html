@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -22,14 +22,14 @@
     <div class="bg-grid"></div>
 
     <header class="hero reveal">
-      <nav class="nav shell">
-        <p class="brand">MHT</p>
+      <nav class="nav shell top-nav">
+        <p class="brand">MHT <span>AI Developer</span></p>
         <div class="nav-links">
           <a href="#summary">About</a>
-          <a href="#highlights">Highlights</a>
-          <a href="#education">Education</a>
           <a href="#skills">Skills</a>
+          <a href="#education">Education</a>
           <a href="#projects">Projects</a>
+          <a href="#achievements">Achievements</a>
           <a href="#contact">Contact</a>
         </div>
       </nav>
@@ -37,35 +37,28 @@
       <section class="hero-body shell">
         <div id="hero-success-banner" class="hero-success-banner" aria-live="polite"></div>
         <div class="hero-top">
-          <img
-            class="profile-pic"
-            src="assets/profile.png"
-            alt="Portrait of Muhammad Hammad Tahir"
-            loading="lazy"
-            onerror="this.onerror=null;this.src='assets/profile-placeholder.svg';"
-          />
           <div>
-            <p class="eyebrow">Artificial Intelligence Student</p>
-            <h1>Muhammad Hammad Tahir</h1>
+            <p class="eyebrow">Karachi, Pakistan • 2026</p>
+            <h1>Hi, I'm<br />Muhammad Hammad Tahir.</h1>
             <p class="lead">
-              I build practical AI solutions across Deep Learning, Computer Vision, and NLP,
-              combining solid Python fundamentals with real-world problem solving.
+              AI developer with hands-on experience in machine learning, chatbot development,
+              computer vision, and real-world AI solutions.
             </p>
             <div class="hero-actions">
-              <a class="btn primary" href="mailto:hammadtahirfdc@gmail.com">Hire Me</a>
-              <a class="btn ghost" href="#projects">View Work</a>
-              <button class="btn ghost" id="view-cv" type="button" title="Preview curriculum vitae PDF">View CV</button>
+              <button class="btn primary neon-btn" type="button" data-open-contact-modal>Let's Talk</button>
               <button class="btn ghost" id="download-cv" type="button" title="Download curriculum vitae PDF">Download CV</button>
+              <button class="btn ghost" id="view-cv" type="button" title="Preview curriculum vitae PDF">Preview CV</button>
             </div>
             <div class="social-actions" aria-label="Social quick actions">
               <a href="https://github.com/Hammadtahir787" target="_blank" rel="noreferrer">GitHub</a>
+              <a href="mailto:hammadtahirfdc@gmail.com">Email</a>
               <a href="https://www.linkedin.com/in/hammad-tahir-a45519319" target="_blank" rel="noreferrer">LinkedIn</a>
-              <a href="https://wa.me/923212307601" target="_blank" rel="noreferrer">WhatsApp</a>
             </div>
+            <p class="scroll-indicator">SCROLL TO BEGIN ↓</p>
           </div>
         </div>
 
-        <ul class="quick-meta" id="contact">
+        <ul class="quick-meta">
           <li><span>Email</span><a href="mailto:hammadtahirfdc@gmail.com">hammadtahirfdc@gmail.com</a></li>
           <li><span>Phone</span><a href="tel:+923212307601">+92 321 2307601</a></li>
           <li><span>Location</span>Karachi, Pakistan</li>
@@ -76,6 +69,7 @@
 
     <main class="shell">
       <section class="panel reveal" id="summary">
+        <p class="chapter">CHAPTER 01 — PROFILE</p>
         <h2>Summary</h2>
         <p>
           Motivated Artificial Intelligence student focused on building useful products, not just
@@ -86,6 +80,7 @@
       </section>
 
       <section class="panel reveal" id="highlights">
+        <p class="chapter">CHAPTER 02 — SNAPSHOT</p>
         <h2>Career Highlights</h2>
         <div class="number-strip">
           <article class="number-card">
@@ -108,6 +103,7 @@
       </section>
 
       <section class="panel reveal" id="services">
+        <p class="chapter">CHAPTER 03 — CAPABILITIES</p>
         <h2>What I Build</h2>
         <div class="feature-grid">
           <article class="feature-card">
@@ -135,6 +131,7 @@
       </section>
 
       <section class="panel reveal" id="education">
+        <p class="chapter">CHAPTER 04 — EDUCATION</p>
         <h2>Education</h2>
         <div class="timeline">
           <article class="timeline-item">
@@ -161,6 +158,7 @@
 
       <section class="grid-two">
         <section class="panel reveal" id="skills">
+          <p class="chapter">CHAPTER 05 — CRAFT</p>
           <h2>Core Skills</h2>
           <div class="skill-list">
             <div class="skill">
@@ -213,6 +211,7 @@
       </section>
 
       <section class="panel reveal" id="projects">
+        <p class="chapter">CHAPTER 06 — SELECT WORK</p>
         <h2>Projects</h2>
         <div class="cards">
           <article class="card">
@@ -252,6 +251,7 @@
       </section>
 
       <section class="panel reveal" id="achievements">
+        <p class="chapter">CHAPTER 07 — MILESTONES</p>
         <h2>Achievements</h2>
         <ul class="bullets">
           <li>Best Behaviour Certificate</li>
@@ -266,7 +266,7 @@
       </section>
     </main>
 
-    <footer class="footer shell reveal">
+    <footer class="footer shell reveal" id="contact">
       <p>Open to internships, junior AI roles, and project collaborations.</p>
       <div class="footer-links">
         <button class="btn ghost footer-cta" id="open-contact-modal" type="button">Let's collaborate</button>

@@ -23,6 +23,7 @@ const downloadCvBtn = document.getElementById('download-cv');
 const viewCvBtn = document.getElementById('view-cv');
 const contactModal = document.getElementById('contact-modal');
 const openContactModalBtn = document.getElementById('open-contact-modal');
+const openContactModalTriggers = document.querySelectorAll('[data-open-contact-modal]');
 const closeContactModalBtn = document.getElementById('close-contact-modal');
 const contactBackdrop = document.getElementById('contact-backdrop');
 const contactForm = document.getElementById('contact-form');
@@ -559,6 +560,10 @@ if (openContactModalBtn) {
   openContactModalBtn.addEventListener('click', openContactModal);
 }
 
+openContactModalTriggers.forEach((trigger) => {
+  trigger.addEventListener('click', openContactModal);
+});
+
 if (closeContactModalBtn) {
   closeContactModalBtn.addEventListener('click', closeContactModal);
 }
@@ -572,6 +577,32 @@ document.addEventListener('keydown', (event) => {
     closeContactModal();
   }
 });
+
+const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+const trackedSections = Array.from(navAnchors)
+  .map((link) => document.querySelector(link.getAttribute('href')))
+  .filter(Boolean);
+
+const navObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) {
+        return;
+      }
+
+      const activeId = `#${entry.target.id}`;
+      navAnchors.forEach((link) => {
+        link.classList.toggle('active', link.getAttribute('href') === activeId);
+      });
+    });
+  },
+  {
+    threshold: 0.5,
+    rootMargin: '-12% 0px -42% 0px',
+  }
+);
+
+trackedSections.forEach((section) => navObserver.observe(section));
 
 if (contactForm) {
   contactForm.addEventListener('submit', (event) => {
