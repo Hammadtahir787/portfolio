@@ -103,6 +103,45 @@ function loadImageDataUrl(src) {
     );
 }
 
+function loadCircularImageDataUrl(src, size = 320) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.crossOrigin = 'anonymous';
+
+    image.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('Canvas context unavailable'));
+        return;
+      }
+
+      const scale = Math.max(size / image.width, size / image.height);
+      const drawWidth = image.width * scale;
+      const drawHeight = image.height * scale;
+      const offsetX = (size - drawWidth) / 2;
+      const offsetY = (size - drawHeight) / 2;
+
+      ctx.clearRect(0, 0, size, size);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.clip();
+      ctx.drawImage(image, offsetX, offsetY, drawWidth, drawHeight);
+      ctx.restore();
+
+      resolve(canvas.toDataURL('image/png'));
+    };
+
+    image.onerror = () => reject(new Error(`Unable to load image: ${src}`));
+    image.src = src;
+  });
+}
+
 async function createCvPdf(action = 'download') {
   try {
     const cvFileName = 'Muhammad-Hammad-Tahir-CV-Teal-2026.pdf';
@@ -263,7 +302,7 @@ ACHIEVEMENTS
 
     async function addProfilePhoto() {
       try {
-        const imgData = await loadImageDataUrl('assets/profile.png');
+        const imgData = await loadCircularImageDataUrl('assets/profile.png');
         const photoSize = 30;
         const photoX = 16;
         const photoY = 9;
@@ -346,6 +385,7 @@ ACHIEVEMENTS
       [
         'Focused on Mathematics and Physics.',
         'Developed strong analytical and problem-solving skills.',
+        'Built foundation for Artificial Intelligence studies.',
       ],
       sidebarX,
       leftY + 1,
@@ -356,11 +396,32 @@ ACHIEVEMENTS
     leftY += 2;
     leftY = addSidebarSection('Achievements', leftY);
     leftY = addBulletItems(
-      ['Best Behaviour Certificate', 'Best Handwriting Certificate', 'Hour of Code Certificate', 'MIT Hackathon Participant', 'ISCT 2025 Conference Attendee'],
+      ['Best Behaviour Certificate', 'Best Handwriting Certificate', 'Hour of Code Certificate (Coding Game)'],
       sidebarX,
       leftY,
       sidebarInnerWidth,
       { fontSize: 8.0, lineGap: 3.85, bulletGap: 0.6, textColor: colors.gray }
+    );
+
+    leftY += 2;
+    leftY = addBulletItems(
+      [
+        'Cleared MIT Hackathon, showcasing fast-paced problem-solving and innovation skills; and participated in ISICT 2025 Conference, gaining exposure to current research trends in AI and computing.',
+      ],
+      sidebarX,
+      leftY,
+      sidebarInnerWidth,
+      { fontSize: 8.0, lineGap: 3.85, bulletGap: 0.6, textColor: colors.gray }
+    );
+
+    leftY += 2;
+    leftY = addSidebarSection('Soft Skills', leftY);
+    leftY = addWrappedText(
+      'Teamwork, Problem-Solving, Leadership, Adaptability, Critical Thinking, Creativity, Negotiation, Management',
+      sidebarX,
+      leftY,
+      sidebarInnerWidth,
+      { fontSize: 8.0, lineGap: 3.95, textColor: colors.gray }
     );
 
     rightY = addContentSection('Summary', rightY);
