@@ -105,6 +105,8 @@ function loadImageDataUrl(src) {
 
 async function createCvPdf(action = 'download') {
   try {
+    const cvFileName = 'Muhammad-Hammad-Tahir-CV-2026.pdf';
+
     // Check if jsPDF library is available
     if (!window.jspdf || !window.jspdf.jsPDF) {
       // Fallback: open a mailto link with CV content
@@ -425,17 +427,20 @@ ACHIEVEMENTS
     doc.text('Template style updated to match the requested two-column resume layout.', contentX, pageHeight - 12);
 
     if (action === 'view') {
-      const blobUrl = doc.output('bloburl');
+      const blob = doc.output('blob');
+      const blobUrl = URL.createObjectURL(blob);
       const previewWindow = window.open(blobUrl, '_blank', 'noopener,noreferrer');
 
       if (!previewWindow) {
         alert('Please allow pop-ups to preview CV.');
+      } else {
+        window.setTimeout(() => URL.revokeObjectURL(blobUrl), 30000);
       }
 
       return;
     }
 
-    doc.save('Muhammad-Hammad-Tahir-CV.pdf');
+    doc.save(cvFileName);
   } catch (e) {
     console.error('PDF Error:', e);
     alert('Download failed. Please retry or contact me directly.');
