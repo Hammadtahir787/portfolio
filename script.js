@@ -20,6 +20,7 @@ revealNodes.forEach((node, index) => {
 });
 
 const downloadCvBtn = document.getElementById('download-cv');
+const viewCvBtn = document.getElementById('view-cv');
 const contactModal = document.getElementById('contact-modal');
 const openContactModalBtn = document.getElementById('open-contact-modal');
 const closeContactModalBtn = document.getElementById('close-contact-modal');
@@ -102,7 +103,7 @@ function loadImageDataUrl(src) {
     );
 }
 
-async function createCvPdf() {
+async function createCvPdf(action = 'download') {
   try {
     // Check if jsPDF library is available
     if (!window.jspdf || !window.jspdf.jsPDF) {
@@ -142,6 +143,11 @@ ACHIEVEMENTS
 - Hour of Code Certificate
 - MIT Hackathon Participant
 - ISCT 2025 Conference Attendee`);
+      if (action === 'view') {
+        alert('Preview is unavailable right now. Please use Download CV.');
+        return;
+      }
+
       window.location.href = `mailto:?subject=${subject}&body=${body}`;
       return;
     }
@@ -418,6 +424,17 @@ ACHIEVEMENTS
     setColor(colors.gray);
     doc.text('Template style updated to match the requested two-column resume layout.', contentX, pageHeight - 12);
 
+    if (action === 'view') {
+      const blobUrl = doc.output('bloburl');
+      const previewWindow = window.open(blobUrl, '_blank', 'noopener,noreferrer');
+
+      if (!previewWindow) {
+        alert('Please allow pop-ups to preview CV.');
+      }
+
+      return;
+    }
+
     doc.save('Muhammad-Hammad-Tahir-CV-Template.pdf');
   } catch (e) {
     console.error('PDF Error:', e);
@@ -427,7 +444,13 @@ ACHIEVEMENTS
 
 if (downloadCvBtn) {
   downloadCvBtn.addEventListener('click', () => {
-    void createCvPdf();
+    void createCvPdf('download');
+  });
+}
+
+if (viewCvBtn) {
+  viewCvBtn.addEventListener('click', () => {
+    void createCvPdf('view');
   });
 }
 
