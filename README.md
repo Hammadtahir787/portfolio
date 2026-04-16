@@ -11,7 +11,7 @@ Premium single-page portfolio website built with HTML, CSS, and JavaScript.
 
 1. Replace profile image by updating `assets/profile-placeholder.svg` or switching source in `index.html`.
 2. Replace CV PDF with your final file while keeping path:
-   - `assets/Muhammad-Hammad-Tahir-CV.pdf`
+   - `assets/Muhammad-Hammad-Tahir-CV-2026.pdf`
 3. Update GitHub link in `index.html` footer.
 
 ## Contact Form
