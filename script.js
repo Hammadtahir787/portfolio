@@ -174,8 +174,12 @@ SKILLS
 Python, Machine Learning, Deep Learning, Computer Vision, NLP, App Development
 
 PROJECTS
+- Smart Attendance System with Face Recognition
 - CNN for Image Classification
 - NLP Text Classification
+- Handwritten Digit Recognition (ANN/CNN)
+- Task Reminder
+- School LMS
 - AI Voice Assistant, AI Chatbot, Calculator GUI, E-Commerce Website
 
 ACHIEVEMENTS
@@ -475,7 +479,7 @@ ACHIEVEMENTS
     rightY += 2;
     rightY = addContentSection('Other Projects', rightY);
     rightY = addWrappedText(
-      'Birthday Finder & Online Examination System (Java)\nBasic Calculator GUI (Python)\nAI Voice Assistant, AI Chatbot\nRock Paper Scissors Game\nQuiz Game\nE-Commerce Website',
+      'Smart Attendance System with Face Recognition\nHandwritten Digit Recognition (ANN/CNN)\nTask Reminder\nSchool LMS\nBirthday Finder & Online Examination System (Java)\nBasic Calculator GUI (Python)\nAI Voice Assistant, AI Chatbot\nRock Paper Scissors Game\nQuiz Game\nE-Commerce Website',
       contentX,
       rightY,
       contentWidth,
