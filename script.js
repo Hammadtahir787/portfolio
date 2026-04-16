@@ -105,7 +105,7 @@ function loadImageDataUrl(src) {
 
 async function createCvPdf(action = 'download') {
   try {
-    const cvFileName = 'Muhammad-Hammad-Tahir-CV-2026.pdf';
+    const cvFileName = 'Muhammad-Hammad-Tahir-CV-Teal-2026.pdf';
 
     // Check if jsPDF library is available
     if (!window.jspdf || !window.jspdf.jsPDF) {
@@ -158,20 +158,23 @@ ACHIEVEMENTS
     const doc = new jsPDF_func({ orientation: 'portrait', unit: 'mm', format: 'a4' });
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
-    const margin = 12;
-    const headerHeight = 40;
-    const sidebarWidth = 54;
+    const margin = 8;
+    const headerHeight = 42;
+    const sidebarWidth = 58;
     const sidebarX = margin;
     const contentX = margin + sidebarWidth + 8;
     const contentWidth = pageWidth - contentX - margin;
     const sidebarInnerWidth = sidebarWidth - 2;
-    const bodyTop = headerHeight + 10;
+    const bodyTop = headerHeight + 6;
 
     const colors = {
-      black: [0, 0, 0],
-      ink: [30, 30, 30],
-      gray: [108, 108, 108],
-      line: [175, 175, 175],
+      bg: [238, 240, 241],
+      tealDark: [0, 65, 68],
+      teal: [0, 109, 111],
+      ink: [20, 38, 40],
+      gray: [233, 247, 247],
+      muted: [84, 104, 106],
+      line: [170, 183, 184],
       white: [255, 255, 255],
     };
 
@@ -216,27 +219,24 @@ ACHIEVEMENTS
     }
 
     function addSidebarSection(title, y) {
+      doc.setFillColor(colors.teal[0], colors.teal[1], colors.teal[2]);
+      doc.roundedRect(sidebarX, y - 3.6, sidebarInnerWidth, 8.2, 4, 4, 'F');
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10.8);
-      setColor(colors.ink);
-      doc.text(title, sidebarX, y);
-      y += 5;
-      doc.setDrawColor(colors.line[0], colors.line[1], colors.line[2]);
-      doc.setLineWidth(0.35);
-      doc.line(sidebarX, y, sidebarX + sidebarInnerWidth, y);
-      return y + 5;
+      doc.setFontSize(10);
+      setColor(colors.white);
+      doc.text(title, sidebarX + 5, y + 1.8);
+      return y + 8.8;
     }
 
     function addContentSection(title, y) {
+      const pillWidth = Math.min(78, contentWidth - 4);
+      doc.setFillColor(colors.tealDark[0], colors.tealDark[1], colors.tealDark[2]);
+      doc.roundedRect(contentX, y - 3.6, pillWidth, 8.2, 4, 4, 'F');
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(11.5);
-      setColor(colors.ink);
-      doc.text(title, contentX, y);
-      y += 4.5;
-      doc.setDrawColor(colors.line[0], colors.line[1], colors.line[2]);
-      doc.setLineWidth(0.35);
-      doc.line(contentX, y, contentX + contentWidth, y);
-      return y + 5;
+      doc.setFontSize(10.5);
+      setColor(colors.white);
+      doc.text(title, contentX + 5, y + 1.8);
+      return y + 8.8;
     }
 
     function addExperienceEntry(role, org, dateRange, bullets, y) {
@@ -248,7 +248,7 @@ ACHIEVEMENTS
 
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(9.1);
-      setColor(colors.gray);
+      setColor(colors.muted);
       doc.text(`${org} | ${dateRange}`, contentX, y);
       y += 4.3;
 
@@ -264,57 +264,61 @@ ACHIEVEMENTS
     async function addProfilePhoto() {
       try {
         const imgData = await loadImageDataUrl('assets/profile.png');
-        const photoSize = 26;
-        const photoX = pageWidth - margin - photoSize;
-        const photoY = 7;
+        const photoSize = 30;
+        const photoX = 16;
+        const photoY = 9;
         doc.setFillColor(colors.white[0], colors.white[1], colors.white[2]);
-        doc.circle(photoX + photoSize / 2, photoY + photoSize / 2, photoSize / 2 + 1.6, 'F');
+        doc.circle(photoX + photoSize / 2, photoY + photoSize / 2, photoSize / 2 + 2.5, 'F');
         doc.addImage(imgData, 'PNG', photoX, photoY, photoSize, photoSize);
-        doc.setDrawColor(colors.line[0], colors.line[1], colors.line[2]);
-        doc.setLineWidth(0.6);
-        doc.circle(photoX + photoSize / 2, photoY + photoSize / 2, photoSize / 2 + 1.6, 'S');
+        doc.setDrawColor(colors.teal[0], colors.teal[1], colors.teal[2]);
+        doc.setLineWidth(1.2);
+        doc.circle(photoX + photoSize / 2, photoY + photoSize / 2, photoSize / 2 + 2.5, 'S');
       } catch (error) {
         doc.setFillColor(colors.white[0], colors.white[1], colors.white[2]);
-        doc.circle(pageWidth - margin - 13, 20, 14, 'F');
-        doc.setDrawColor(colors.line[0], colors.line[1], colors.line[2]);
-        doc.circle(pageWidth - margin - 13, 20, 14, 'S');
+        doc.circle(31, 24, 17, 'F');
+        doc.setDrawColor(colors.teal[0], colors.teal[1], colors.teal[2]);
+        doc.setLineWidth(1.2);
+        doc.circle(31, 24, 17, 'S');
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(10);
-        setColor(colors.gray);
-        doc.text('MHT', pageWidth - margin - 19, 22);
+        setColor(colors.muted);
+        doc.text('MHT', 24, 26);
       }
     }
 
-    doc.setFillColor(colors.black[0], colors.black[1], colors.black[2]);
-    doc.rect(0, 0, pageWidth, headerHeight, 'F');
+    doc.setFillColor(colors.bg[0], colors.bg[1], colors.bg[2]);
+    doc.rect(0, 0, pageWidth, pageHeight, 'F');
+    doc.setFillColor(colors.tealDark[0], colors.tealDark[1], colors.tealDark[2]);
+    doc.rect(0, 0, 68, pageHeight, 'F');
+    doc.rect(68, 0, pageWidth - 68, headerHeight, 'F');
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(22);
+    doc.setFontSize(16.5);
     setColor(colors.white);
-    doc.text('MUHAMMAD HAMMAD TAHIR', margin, 19);
+    doc.text('Muhammad Hammad Tahir*', 72, 20);
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9.6);
-    doc.setDrawColor(130, 130, 130);
-    doc.setLineWidth(0.7);
-    doc.line(margin, 24.5, pageWidth - 48, 24.5);
-    doc.text('Artificial Intelligence Student | Python Developer', margin, 30.5);
+    doc.setFontSize(7.6);
+    doc.text('Motivated AI student with experience in Deep Learning,', 72, 28);
+    doc.text('Computer Vision, and NLP. Skilled in Python and AI', 72, 32);
+    doc.text('frameworks with hands-on CNN and NLP projects.', 72, 36);
+    doc.text('Passionate about real-world AI applications and learning.', 72, 40);
 
     await addProfilePhoto();
 
+    doc.setFillColor(colors.bg[0], colors.bg[1], colors.bg[2]);
+    doc.rect(68, headerHeight, pageWidth - 68, pageHeight - headerHeight, 'F');
     doc.setDrawColor(colors.line[0], colors.line[1], colors.line[2]);
-    doc.setLineWidth(0.45);
+    doc.setLineWidth(0.4);
     doc.line(margin + sidebarWidth + 4, bodyTop - 2, margin + sidebarWidth + 4, pageHeight - margin);
 
     let leftY = bodyTop;
     let rightY = bodyTop;
 
     leftY = addSidebarSection('Contact', leftY);
-    leftY = addWrappedText('Phone: +92 321 2307601', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.7, lineGap: 4.1, textColor: colors.gray });
-    leftY = addWrappedText('Email: hammadtahirfdc@gmail.com', sidebarX, leftY + 1, sidebarInnerWidth, { fontSize: 8.7, lineGap: 4.1, textColor: colors.gray });
-    leftY = addWrappedText('Karachi, Pakistan', sidebarX, leftY + 1, sidebarInnerWidth, { fontSize: 8.7, lineGap: 4.1, textColor: colors.gray });
-    leftY = addWrappedText('GitHub: github.com/Hammadtahir787', sidebarX, leftY + 1, sidebarInnerWidth, { fontSize: 8.2, lineGap: 4.0, textColor: colors.gray });
-    leftY = addWrappedText('LinkedIn: linkedin.com/in/hammad-tahir-a45519319', sidebarX, leftY + 1, sidebarInnerWidth, { fontSize: 8.0, lineGap: 4.0, textColor: colors.gray });
+    leftY = addWrappedText('Phone: +92 321 2307601', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.2, lineGap: 4.0, textColor: colors.gray });
+    leftY = addWrappedText('Email: hammadtahirfdc@gmail.com', sidebarX, leftY + 1, sidebarInnerWidth, { fontSize: 8.0, lineGap: 4.0, textColor: colors.gray });
+    leftY = addWrappedText('Karachi, Pakistan', sidebarX, leftY + 1, sidebarInnerWidth, { fontSize: 8.0, lineGap: 4.0, textColor: colors.gray });
 
     leftY += 2;
     leftY = addSidebarSection('Education', leftY);
@@ -426,11 +430,6 @@ ACHIEVEMENTS
       contentWidth,
       { fontSize: 8.6, lineGap: 4.2, textColor: colors.ink }
     );
-
-    doc.setFont('helvetica', 'italic');
-    doc.setFontSize(8.3);
-    setColor(colors.gray);
-    doc.text('Template style updated to match the requested two-column resume layout.', contentX, pageHeight - 12);
 
     if (action === 'view') {
       const blob = doc.output('blob');
