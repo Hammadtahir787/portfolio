@@ -165,7 +165,36 @@ body {
 }
 
 .hero-top {
-  width: min(780px, 100%);
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 170px;
+  gap: 1rem;
+  align-items: start;
+}
+
+.hero-copy {
+  width: min(760px, 100%);
+  max-width: 100%;
+}
+
+.hero-portrait {
+  margin: 0;
+  justify-self: end;
+  align-self: start;
+  width: 170px;
+  padding: 0.28rem;
+  border-radius: 18px;
+  border: 1px solid rgba(101, 150, 186, 0.5);
+  background: linear-gradient(165deg, rgba(92, 244, 242, 0.12), rgba(255, 255, 255, 0.02));
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.34);
+}
+
+.profile-pic {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 14px;
+  object-fit: cover;
 }
 
 .eyebrow {
@@ -190,11 +219,12 @@ h1 {
   font-size: clamp(2.4rem, 7vw, 5.2rem);
   color: var(--accent-warm);
   text-shadow: 0 0 20px rgba(100, 255, 245, 0.56);
+  max-width: 12ch;
 }
 
 .lead {
   color: #d2deef;
-  max-width: 64ch;
+  max-width: 42ch;
   font-size: clamp(1.08rem, 2.2vw, 1.9rem);
   line-height: 1.45;
 }
@@ -203,7 +233,7 @@ h1 {
   display: flex;
   gap: 0.85rem;
   margin: 1.55rem 0 1.2rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .social-actions {
@@ -787,6 +817,14 @@ main {
   .hero-body {
     min-height: auto;
   }
+
+  .hero-portrait {
+    width: 155px;
+  }
+
+  .hero-top {
+    grid-template-columns: minmax(0, 1fr) 155px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -802,6 +840,11 @@ main {
     align-items: flex-start;
   }
 
+  .nav-links {
+    width: 100%;
+    gap: 0.65rem 0.9rem;
+  }
+
   .quick-meta span {
     display: inline;
   }
@@ -810,11 +853,53 @@ main {
     grid-template-columns: 1fr;
   }
 
+  .hero-actions {
+    flex-wrap: wrap;
+  }
+
+  .hero-copy {
+    width: 100%;
+  }
+
+  .hero-portrait {
+    width: min(180px, 100%);
+    justify-self: start;
+  }
+
+  .hero-top {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  h1 {
+    max-width: 100%;
+  }
+
   h1 {
     font-size: clamp(2rem, 13vw, 3.2rem);
   }
 
   .lead {
     font-size: 1.05rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .social-actions {
+    gap: 0.55rem 0.75rem;
+  }
+
+  .quick-meta {
+    gap: 0.55rem;
   }
 }

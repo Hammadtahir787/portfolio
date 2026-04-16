@@ -7,6 +7,21 @@ Premium single-page portfolio website built with HTML, CSS, and JavaScript.
 1. Open `index.html` directly in a browser.
 2. Or use VS Code Live Server for auto-reload.
 
+## Run on Wi-Fi (for phone testing)
+
+1. Open PowerShell in this project folder.
+2. Run:
+   - `powershell -ExecutionPolicy Bypass -File .\start-wifi.ps1`
+3. It will print two URLs:
+   - PC URL (localhost)
+   - Mobile URL (your local IP)
+4. Connect your phone to the same Wi-Fi and open the Mobile URL.
+
+Notes:
+- Keep the PowerShell window open while testing.
+- Press `Ctrl + C` to stop the server.
+- If mobile still cannot open, allow Node.js through Windows Firewall (Private network).
+
 ## Customize quickly
 
 1. Replace profile image by updating `assets/profile-placeholder.svg` or switching source in `index.html`.
