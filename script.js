@@ -317,40 +317,37 @@ ACHIEVEMENTS
     leftY = addWrappedText('LinkedIn: linkedin.com/in/hammad-tahir-a45519319', sidebarX, leftY + 1, sidebarInnerWidth, { fontSize: 8.0, lineGap: 4.0, textColor: colors.gray });
 
     leftY += 2;
-    leftY = addSidebarSection('Skills', leftY);
-    leftY = addBulletItems(
-      [
-        'Python Programming',
-        'Machine Learning',
-        'Deep Learning',
-        'Computer Vision',
-        'Natural Language Processing',
-        'App Development',
-        'Problem Solving',
-        'Teamwork',
-      ],
-      sidebarX,
-      leftY,
-      sidebarInnerWidth,
-      { fontSize: 8.2, lineGap: 3.9, bulletGap: 0.8, textColor: colors.gray }
-    );
-
-    leftY += 2;
     leftY = addSidebarSection('Education', leftY);
     leftY = addWrappedText('DHA Suffa University', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.8, fontStyle: 'bold', lineGap: 4.0 });
     leftY = addWrappedText('Karachi, Pakistan', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.2, textColor: colors.gray, lineGap: 4.0 });
     leftY = addWrappedText('B.S. in Artificial Intelligence', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.2, lineGap: 4.0 });
     leftY = addWrappedText('2023 - Present', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.0, textColor: colors.gray, lineGap: 4.0 });
+    leftY = addBulletItems(
+      [
+        'Studied ML, DL, CV, and NLP with practical CNN and NLP projects.',
+        'Built a strong theory and practical skills foundation.',
+      ],
+      sidebarX,
+      leftY + 1,
+      sidebarInnerWidth,
+      { fontSize: 7.8, lineGap: 3.7, bulletGap: 0.7, textColor: colors.gray }
+    );
 
     leftY += 2;
     leftY = addWrappedText('Fazaia Degree College', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.8, fontStyle: 'bold', lineGap: 4.0 });
     leftY = addWrappedText('Karachi, Pakistan', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.2, textColor: colors.gray, lineGap: 4.0 });
     leftY = addWrappedText('Pre-Engineering, FSc', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.2, lineGap: 4.0 });
-    leftY = addWrappedText('2021 - 2022', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.0, textColor: colors.gray, lineGap: 4.0 });
-
-    leftY += 2;
-    leftY = addSidebarSection('Languages', leftY);
-    leftY = addBulletItems(['English - Advanced', 'Urdu - Native', 'Punjabi - Intermediate'], sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.2, lineGap: 3.9, bulletGap: 0.6, textColor: colors.gray });
+    leftY = addWrappedText('Apr 2021 - May 2022', sidebarX, leftY, sidebarInnerWidth, { fontSize: 8.0, textColor: colors.gray, lineGap: 4.0 });
+    leftY = addBulletItems(
+      [
+        'Focused on Mathematics and Physics.',
+        'Developed strong analytical and problem-solving skills.',
+      ],
+      sidebarX,
+      leftY + 1,
+      sidebarInnerWidth,
+      { fontSize: 7.8, lineGap: 3.7, bulletGap: 0.7, textColor: colors.gray }
+    );
 
     leftY += 2;
     leftY = addSidebarSection('Achievements', leftY);
@@ -372,53 +369,62 @@ ACHIEVEMENTS
     );
 
     rightY += 3;
-    rightY = addContentSection('Experience', rightY);
-
-    rightY = addExperienceEntry(
-      'AI Project Developer',
-      'Academic & Personal Projects',
-      '2023 - Present',
-      [
-        'Built a CNN-based image classification project using Python and deep learning libraries.',
-        'Developed an NLP text classification model with preprocessing, tokenization, padding, and embeddings.',
-        'Created supporting projects including an AI voice assistant, chatbot, calculator GUI, and e-commerce website.',
-      ],
-      rightY
-    );
-
-    rightY = addExperienceEntry(
-      'AI Student',
-      'DHA Suffa University',
-      'Oct 2023 - Present',
-      [
-        'Studying Machine Learning, Deep Learning, Computer Vision, and NLP as part of the B.S. in Artificial Intelligence curriculum.',
-        'Applying course concepts through hands-on assignments and portfolio projects.',
-        'Building a strong foundation in problem solving, teamwork, and technical communication.',
-      ],
-      rightY
-    );
-
-    rightY = addContentSection('Selected Projects', rightY);
+    rightY = addContentSection('Projects', rightY);
+    rightY = addWrappedText('CNN for Image Classification (Learning Project)', contentX, rightY, contentWidth, {
+      fontSize: 9.2,
+      fontStyle: 'bold',
+      lineGap: 4.0,
+      textColor: colors.ink,
+    });
     rightY = addBulletItems(
       [
-        'CNN for Image Classification - learned convolution, pooling, activations, training, and evaluation.',
-        'NLP Text Classification - sentiment classification using LSTM and transformer-based approaches.',
-        'Other Build Projects - Birthday Finder, Online Examination System, AI Voice Assistant, AI Chatbot, Quiz Game, and more.',
+        'Studied CNN fundamentals (convolution, pooling, activation functions).',
+        'Built a basic CNN model for multi-class image classification.',
+        'Used Python and deep learning libraries for training and evaluation.',
       ],
       contentX,
       rightY,
       contentWidth,
-      { fontSize: 8.6, lineGap: 4.0, bulletGap: 1.1, textColor: colors.ink }
+      { fontSize: 8.3, lineGap: 3.8, bulletGap: 0.9, textColor: colors.ink }
     );
 
-    rightY += 2.5;
-    rightY = addContentSection('Career Objective', rightY);
-    rightY = addWrappedText(
-      'Open to internships and junior AI roles in Machine Learning, Deep Learning, Computer Vision, and NLP.',
+    rightY += 1;
+    rightY = addWrappedText('NLP Text Classification (Practical Work)', contentX, rightY, contentWidth, {
+      fontSize: 9.2,
+      fontStyle: 'bold',
+      lineGap: 4.0,
+      textColor: colors.ink,
+    });
+    rightY = addBulletItems(
+      [
+        'Explored NLP techniques using LSTM and transformer models.',
+        'Built a sentiment classification model on a small text dataset.',
+        'Performed text preprocessing (tokenization, padding, embeddings).',
+      ],
       contentX,
       rightY,
       contentWidth,
-      { fontSize: 9.1, lineGap: 4.2, textColor: colors.ink }
+      { fontSize: 8.3, lineGap: 3.8, bulletGap: 0.9, textColor: colors.ink }
+    );
+
+    rightY += 2;
+    rightY = addContentSection('Other Projects', rightY);
+    rightY = addWrappedText(
+      'Birthday Finder & Online Examination System (Java)\nBasic Calculator GUI (Python)\nAI Voice Assistant, AI Chatbot\nRock Paper Scissors Game\nQuiz Game\nE-Commerce Website',
+      contentX,
+      rightY,
+      contentWidth,
+      { fontSize: 8.5, lineGap: 4.1, textColor: colors.ink }
+    );
+
+    rightY += 2;
+    rightY = addContentSection('Skills', rightY);
+    rightY = addWrappedText(
+      'Python Programming (Advanced)\nDeep Learning\nComputer Vision\nApp Development\nNatural Language Processing\nMachine Learning Fundamentals',
+      contentX,
+      rightY,
+      contentWidth,
+      { fontSize: 8.6, lineGap: 4.2, textColor: colors.ink }
     );
 
     doc.setFont('helvetica', 'italic');
